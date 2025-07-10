@@ -366,4 +366,11 @@ DATABASES = {
 ```
 ---
 
+- En settings.py, cambiar el valor de la variable debug porque ya se esta trabajando con mySQL:
+
+```python
+DEBUG = os.getenv('DEBUG')
+```
+---
+
 
