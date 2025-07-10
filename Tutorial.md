@@ -22,8 +22,9 @@ En caso de no contar con alguna de las siguientes, se dejara la pagina en donde 
 - python 3.10 en adelante.
 - virtualenv **(Pag. 5)**
 - django **(Pag. 7)**
-- django rest framework **(Pag 15)**
-- mySQL client **(Pag 17)**
+- django rest framework **(Pag. 15)**
+- mySQL client **(Pag. 17)**
+- dotenv **(Pag. 20)**
 
 ---
 ---
@@ -284,6 +285,84 @@ mysqlclient==2.2.7
 
 ``` bash
 pip installrequirements.txt
+```
+---
+### Configuaracion de la bd
+
+- En settings.py modificar la parte de DATABASES:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+        'OPTIONS': {
+            'autocommit': True
+        }
+    }
+}
+```
+---
+- Instalar dotenv, en terminal ejecutar:
+```bash
+pip install python-dotenv
+```
+
+- Crear un archivo .env y llenar la siguiente informacion:
+
+```bash
+DATABASE_SERVER = server
+DATABASE_USER = root
+DATABASE_PASSWORD = ijole123
+DATABASE_PORT = 3306
+DATABASE_BD = nombre_de_la_bd
+```
+---
+- Crear un archivo .env.example y poner lo mismo que en .env pero sin valores:
+
+```bash
+DATABASE_SERVER =
+DATABASE_USER =
+DATABASE_PASSWORD =
+DATABASE_PORT =
+DATABASE_BD =
+```
+
+- Crear un .gitignore y agregar el .env
+
+- En settings.py agregar las siguientes importaciones:
+
+```python
+import os
+from dotenv import load_dotenv
+```
+---
+- En settings.py agregar la siguiente funcion:
+
+``` python
+load_dotenv()
+```
+
+- Modificar tu seccion de DATABASES con dotenv:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_BD'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_SERVER'),
+        'PORT': os.getenv('DATABASE_PORT'),
+        'OPTIONS': {
+            'autocommit': True
+        }
+    }
+}
 ```
 ---
 
