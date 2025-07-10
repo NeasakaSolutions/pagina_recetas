@@ -195,7 +195,6 @@ urlpatterns = [
     path('', home_inicio), # Se importa el contenido de views.py
 ]
 ```
-
 ---
 
 - Despues en urls.py del archivo principal (en este caso backend):
@@ -209,6 +208,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')), # Ruta principal, por eso no se agrega nada en las comillas
 ]
+```
+
+- Prueba la app home
+
+```bash
+python manage.py runserver
 ```
 ---
 
