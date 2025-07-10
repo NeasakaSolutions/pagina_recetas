@@ -378,5 +378,21 @@ DEBUG = os.getenv('DEBUG')
 django-admin startapp categorias
 ```
 ---
+- En urls.py de settings.py agregar las siguientes importaciones y nueva variable:
+
+```python
+from django.conf import settings
+from django.conf import static
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+```
+
+- En el mismo archivo, agregar la ruta de la nueva app:
+
+```python
+path('api/v1/', include('categorias.urls')),
+```
+---
+---
 
 
