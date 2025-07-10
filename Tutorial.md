@@ -371,6 +371,12 @@ DATABASES = {
 ```python
 DEBUG = os.getenv('DEBUG')
 ```
+
+- Se crea una nueva aplicacion, en este caso bajo el nombre de "categorias"
+
+```bash
+django-admin startapp categorias
+```
 ---
 
 
