@@ -23,6 +23,7 @@ En caso de no contar con alguna de las siguientes, se dejara la pagina en donde 
 - virtualenv **(Pag. 5)**
 - django **(Pag. 7)**
 - django rest framework **(Pag 15)**
+- mySQL client **(Pag 17)**
 
 ---
 ---
@@ -247,6 +248,43 @@ INSTALLED_APPS = [
 ```
 ---
 
+### Base de datos
 
+- Crear una base de datos, en este caso nuestra bd se llama **"django_recetas"**
+
+- Para instalar mySQL client en linux se utiliza lo siguiente:
+
+```bash
+apt-get install python-dev default-libmysqlclient-dev
+```
+
+- Instalar para hacer la conexion con mySQL en la app: **(Recuerda activar el entorno y estar en la ruta del proyecto principal)**
+
+```bash
+pip install mysqlclient
+```
 
 ---
+
+- Empezar a generar el requirements, se pone en terminal:
+
+```bash
+pip freeze
+```
+
+- Crear un archivo nuevo llamado "requirements.txt" y pegra lo que dio la terminal:
+
+```python
+Django==5.2.4
+djangorestframework==3.16.0
+mysqlclient==2.2.7
+```
+
+- Para instalar los archivos de requirements.txt se ejecuta en terminal lo siguiente:
+
+``` bash
+pip installrequirements.txt
+```
+---
+
+
