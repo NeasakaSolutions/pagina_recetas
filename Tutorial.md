@@ -32,7 +32,7 @@ En caso de no contar con alguna de las siguientes, se dejara la pagina en donde 
 - Dirigirse a la carpeta principal del proyecto, en este caso la ruta es la siguiente:
 
 ```bash
-D:\CURSOS\django\pagina_recetas>
+D:\pagina_recetas>
 ```
 
 - Instalar el entorno virtualenv **(Verificar que no se tenga instalado)**
@@ -143,7 +143,7 @@ USE_TZ = True
 - Asegurarse de estar en la carpeta del proyecto:
 
 ``` bash
-(entorno) D:\CURSOS\django\pagina_recetas>
+(entorno) D:\pagina_recetas\backend>
 ```
 
 - Ejecutar proyecto en django:
