@@ -615,6 +615,44 @@ def post(self, request):
 ```
 
 - Verificar que todo funcione correctamente.
+
+---
+- En views.py de la app categorias, importar:
+```python
+from django.utils.text import slugify
+```
+
+- Crear la funcion de put en **"Clase2"**:
+
+```python
+def put(self, request, id):
+        if request.data.get("nombre") == None or not request.data["nombre"]:
+            return JsonResponse({"estado": "error", "mensaje" : "El campo nombre es obligatorio"},
+                                status = HTTPStatus.BAD_REQUEST)
+        
+        try:
+            data = Categoria.objects.filter(pk = id).get()
+            Categoria.objects.filter(pk = id).update(nombre = request.data.get("nombre"),
+                                    slug = slugify(request.data.get("nombre")))
+            return JsonResponse({"estado": "ok", "mensaje": "Se modifico el registro correctamente"},
+                                 status = HTTPStatus.OK)
+
+        except Categoria.DoesNotExist:
+            raise Http404
+```
+---
+- Probar en insomnia con la funcion PUT en una registro, en este caso la url fue:
+```bash
+http://xxx.x.x.x:xxxx/api/v1/categorias/5
+```
+
+- Se agrego un json en insomnia:
+
+```python
+{
+    "nombre": "Ensaladas frescas"
+}
+```
 ---
 
 
