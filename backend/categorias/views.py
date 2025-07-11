@@ -12,7 +12,7 @@ class Clase1(APIView):
 
     # Funcion para mostrar datos
     def get(self, request):
- 
+        
         # SELECT * FROM categorias ORDER BY DESC;
         data = Categoria.objects.order_by('-id').all() # Variable que almacena la tabla a consultar
         datos_json = CategoriaSerializer(data, many = True)
@@ -20,6 +20,9 @@ class Clase1(APIView):
     
     # Funcion para agregar datos
     def post(self, request):
+        if request.data.get("nombre") == None or not request.data["nombre"]:
+            return JsonResponse({"estado": "error", "mensaje" : "El campo nombre es obligatorio"},
+                                status = HTTPStatus.BAD_REQUEST)
         try:
             # Crear registro
             Categoria.objects.create(nombre = request.data['nombre'])
