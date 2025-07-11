@@ -471,7 +471,33 @@ class Meta:
     verbose_name_plural = 'Categorias'
 ```
 ---
+### Crear migraciones
 
+- Crear las tablas, aplicar en terminal:
+
+```bash
+python manage.py migrate
+```
+
+- Verificar que la base de datos se generen las tablas automaticamente.
+
+- Crear la migracion de la app categorias.
+
+```bash
+python manage.py makemigrations
+```
+
+---
+
+- Verificar en la carpeeta migrations que exista un archivo nuevo y contenga codigo.
+
+- Una vez verificado, ejecutar:
+
+```bash
+python manage.py migrate
+```
+- Verificar que se haya creado la tabla de categorias en la base de datos
+---
 ---
 
 
