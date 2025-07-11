@@ -17,6 +17,17 @@ class Clase1(APIView):
         data = Categoria.objects.order_by('-id').all() # Variable que almacena la tabla a consultar
         datos_json = CategoriaSerializer(data, many = True)
         return JsonResponse({"data": datos_json.data}, status = HTTPStatus.OK)
+    
+    # Funcion para agregar datos
+    def post(self, request):
+        try:
+            # Crear registro
+            Categoria.objects.create(nombre = request.data['nombre'])
+            return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente"},
+                                 status = HTTPStatus.CREATED)
+        # Excepcion general
+        except Exception as e:
+            raise Http404
 
 # Busqueda individual    
 class Clase2(APIView):
