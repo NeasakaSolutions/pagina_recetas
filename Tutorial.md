@@ -26,8 +26,10 @@ En caso de no contar con alguna de las siguientes, se dejara la pagina en donde 
 - mySQL client **(Pag. 17)**
 - dotenv **(Pag. 20)**
 - django-autoslug **(Pag.28)**
-
 ---
+
+- insomnia
+
 ---
 
 ### Crear el entorno virtual:
@@ -506,6 +508,63 @@ INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('2', 
 INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('3', 'Tragos y cocteles', 'tragos-y-cocteles');
 INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('4', 'Frutas y verduras', 'frutas-y-verduras');
 ```
+
+- En views.py de la app categorias agregar:
+
+```python
+from rest_framework.views import APIView
+from django.http.response import JsonResponse
+from rest_framework.response import Response
+from categorias.models import Categoria 
+from http import HTTPStatus
+
+class Clase1(APIView):
+
+    def get(self, request): 
+        data = Categoria.objects.order_by('-id').all()
+        return Response(data)
+```
+---
+
+- En la app categorias crear un archivo llamado serializers.py y pegar:
+
+```python
+from rest_framework import serializers
+from categorias.models import Categoria
+
+class CategoriaSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Categoria
+        fields = ("id", "nombre", "slug")
+```
+
+- En la views.py de la app categorias agregar:
+
+```python
+from categorias.serializers import CategoriaSerializer
+```
+---
+
+- Modificar la clase de categorias:
+
+```python
+class Clase1(APIView):
+
+    def get(self, request):
+        data = Categoria.objects.order_by('-id').all()
+        datos_json = CategoriaSerializer(data, many = True)
+        return JsonResponse({"data": datos_json.data}, status = HTTPStatus.OK)
+```
+---
+- En insomnia crear un nuevo proyecto y una nueva request con la direccion de tu localhost y la url:
+
+```bash
+http://xxx.x.x.x:xxxx/api/v1/categorias
+```
+
+- Usar el metodo GET y debera devolver los registros de la base de datos de la tabla categorias
+
 ---
 
 
