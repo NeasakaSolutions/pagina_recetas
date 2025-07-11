@@ -25,6 +25,7 @@ En caso de no contar con alguna de las siguientes, se dejara la pagina en donde 
 - django rest framework **(Pag. 15)**
 - mySQL client **(Pag. 17)**
 - dotenv **(Pag. 20)**
+- django-autoslug **(Pag.28)**
 
 ---
 ---
@@ -378,7 +379,7 @@ DEBUG = os.getenv('DEBUG')
 django-admin startapp categorias
 ```
 ---
-- En urls.py de settings.py agregar las siguientes importaciones y nueva variable:
+- En urls.py de backend agregar las siguientes importaciones y nueva variable:
 
 ```python
 from django.conf import settings
@@ -393,6 +394,61 @@ urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 path('api/v1/', include('categorias.urls')),
 ```
 ---
+### Configuracion de la app categorias
+
+- Agregar la app en INSTALLED_APPS que se ubica en settings.py
+
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'categorias',
+]
+```
+---
+- En la app categorias se debera de crear un archivo urls.py y agregar lo siguiente:
+
+```python
+from django.urls import path
+from .views import Clase1
+
+urlpatterns = [
+    path('categorias', Clase1.as_view())
+]
+```
+
+---
+- En views.py de la app categoria agregar el siguiente codigo:
+
+```python
+from rest_framework.views import APIView
+from django.http.response import JsonResponse
+
+# Clases de la aplicacion
+class Clase1(APIView):
+
+    # Funcion para mostrar datos
+    def get(self, request):
+        pass
+```
+---
+### Crear modelo en app categoria
+
+- Primero se debera de descargar django-autoslug:
+
+```bash
+pip install django-autoslug
+```
+
+- En el archivo models.py de la app categorias, generar las tablas
+
+```python
+```
 ---
 
 
