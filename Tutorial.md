@@ -595,12 +595,13 @@ class Clase2(APIView):
 
 ```python
 def post(self, request):
+        if request.data.get("nombre") == None or not request.data["nombre"]:
+            return JsonResponse({"estado": "error", "mensaje" : "El campo nombre es obligatorio"},
+                                status = HTTPStatus.BAD_REQUEST)
         try:
-            # Crear registro
             Categoria.objects.create(nombre = request.data['nombre'])
             return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente"},
                                  status = HTTPStatus.CREATED)
-        # Excepcion general
         except Exception as e:
             raise Http404
 ```
@@ -612,6 +613,8 @@ def post(self, request):
     "nombre": "Categoria nueva"
 }
 ```
+
+- Verificar que todo funcione correctamente.
 ---
 
 
