@@ -590,7 +590,28 @@ class Clase2(APIView):
         except Categoria.DoesNotExist:
             raise Http404
 ```
+---
+- En views.py de la app categoria agregar la funcion post en **"Clase1"**:
 
+```python
+def post(self, request):
+        try:
+            # Crear registro
+            Categoria.objects.create(nombre = request.data['nombre'])
+            return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente"},
+                                 status = HTTPStatus.CREATED)
+        # Excepcion general
+        except Exception as e:
+            raise Http404
+```
+---
+- Mandarle un json a la funcion post por medio de insomnia:
+
+```python
+{
+    "nombre": "Categoria nueva"
+}
+```
 ---
 
 
