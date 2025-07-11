@@ -565,6 +565,32 @@ http://xxx.x.x.x:xxxx/api/v1/categorias
 
 - Usar el metodo GET y debera devolver los registros de la base de datos de la tabla categorias
 
+- Crear una nueva ruta en urls.py de categorias y agregar una nueva importacion:
+
+```python
+from categorias.views import Clase2
+
+path('categorias/<int:id>', Clase2.as_view()),
+```
+---
+
+- En views.py de categorias crear una clase bajo el nombre de "Clase2" e importar nueva libreria:
+
+```python
+# Nueva importacion
+from django.http import Http404
+
+class Clase2(APIView):
+
+    def get(self, request, id):
+        try:
+            data = Categoria.objects.filter(id = id).get()
+            return JsonResponse({"data": {"id": data.id ,"nombre": data.nombre, "slug": data.slug}},
+                             status = HTTPStatus.OK)
+        except Categoria.DoesNotExist:
+            raise Http404
+```
+
 ---
 
 
