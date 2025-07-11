@@ -67,5 +67,20 @@ class Clase2(APIView):
 
         except Categoria.DoesNotExist:
             raise Http404
+        
+    # Metodo para eliminar registros
+    def delete(self, request, id):
+         
+        try:
+            # Busca el registro
+            data = Categoria.objects.filter(pk = id).get()
+            # Eliminar en caso de que si encuentre el registro
+            Categoria.objects.filter(pk = id).delete()
+            # Retorno
+            return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro correctamente"},
+                                 status = HTTPStatus.OK)
+
+        except Categoria.DoesNotExist:
+            raise Http404
 
         
