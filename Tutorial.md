@@ -654,5 +654,22 @@ http://xxx.x.x.x:xxxx/api/v1/categorias/5
 }
 ```
 ---
+- En views.py de la app categoria agregar la funcion para eliminar un registro en la **"Clase2"**:
 
+```python
+def delete(self, request, id):
+         
+    try:
+            # Busca el registro
+        data = Categoria.objects.filter(pk = id).get()
+            # Eliminar en caso de que si encuentre el registro
+        Categoria.objects.filter(pk = id).delete()
+            # Retorno
+        return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro correctamente"},
+                                 status = HTTPStatus.OK)
+
+    except Categoria.DoesNotExist:
+        raise Http404
+```
+---
 
