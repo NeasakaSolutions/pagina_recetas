@@ -4,6 +4,7 @@ from django.http.response import JsonResponse
 from categorias.serializers import CategoriaSerializer
 from http import HTTPStatus
 from django.http import Http404
+from django.utils.text import slugify
 # Tabla que se usara para realizar las consultas
 from categorias.models import Categoria 
 
@@ -16,6 +17,7 @@ class Clase1(APIView):
         # SELECT * FROM categorias ORDER BY DESC;
         data = Categoria.objects.order_by('-id').all() # Variable que almacena la tabla a consultar
         datos_json = CategoriaSerializer(data, many = True)
+        # Retorno
         return JsonResponse({"data": datos_json.data}, status = HTTPStatus.OK)
     
     # Funcion para agregar datos
@@ -26,6 +28,7 @@ class Clase1(APIView):
         try:
             # Crear registro
             Categoria.objects.create(nombre = request.data['nombre'])
+            # Retorno
             return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente"},
                                  status = HTTPStatus.CREATED)
         # Excepcion general
@@ -40,8 +43,28 @@ class Clase2(APIView):
         try:
             # SELECT * FROM categorias WHERE id = 4;
             data = Categoria.objects.filter(id = id).get() # pk = id (primary key)
+            # Retorno
             return JsonResponse({"data": {"id": data.id ,"nombre": data.nombre, "slug": data.slug}},
                              status = HTTPStatus.OK)
+        except Categoria.DoesNotExist:
+            raise Http404
+        
+    # Funcion para editar una categoria
+    def put(self, request, id):
+        if request.data.get("nombre") == None or not request.data["nombre"]:
+            return JsonResponse({"estado": "error", "mensaje" : "El campo nombre es obligatorio"},
+                                status = HTTPStatus.BAD_REQUEST)
+        
+        try:
+            # Busca el registro
+            data = Categoria.objects.filter(pk = id).get()
+            # Modificar en caso de que si encuentre el registro
+            Categoria.objects.filter(pk = id).update(nombre = request.data.get("nombre"),
+                                    slug = slugify(request.data.get("nombre")))
+            # Retorno
+            return JsonResponse({"estado": "ok", "mensaje": "Se modifico el registro correctamente"},
+                                 status = HTTPStatus.OK)
+
         except Categoria.DoesNotExist:
             raise Http404
 
