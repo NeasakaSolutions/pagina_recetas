@@ -498,6 +498,14 @@ python manage.py migrate
 ```
 - Verificar que se haya creado la tabla de categorias en la base de datos
 ---
+- Almacenar 4 registros en la tabla categorias:
+
+```bash
+INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('1', 'Carnes y Pollos', 'carnes-y-pollos');
+INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('2', 'Pescados y mariscos', 'pescados-y-mariscos');
+INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('3', 'Tragos y cocteles', 'tragos-y-cocteles');
+INSERT INTO `django_recetas`.`categorias` (`id`, `nombre`, `slug`) VALUES ('4', 'Frutas y verduras', 'frutas-y-verduras');
+```
 ---
 
 
