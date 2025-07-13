@@ -6,6 +6,7 @@ class: lead
 ---
 
 # Tutorial del como se realizo este proyecto
+### NOTAS al final de la presentacion
 
 ---
 
@@ -670,6 +671,59 @@ def delete(self, request, id):
 
     except Categoria.DoesNotExist:
         raise Http404
+```
+---
+### Configuracion de la app recetas
+
+- Crear la nueva aplicacion:
+
+```bash
+django-admin startapp recetas
+```
+
+- En la app recetas, crear un archivo urls.py con el siguiente contenido:
+
+``` python
+from django.urls import path
+from recetas.views import Clase1
+
+urlpatterns = [
+    path('recetas', Clase1.as_view()),
+]
+```
+---
+
+- En el proyecto principal (backend), agregar la siguiente ruta en urls.py:
+
+```python
+path('api/v1/', include('recetas.urls')),
+```
+
+- En views.py de la app recetas, agregar:
+
+```python
+from rest_framework.views import APIView
+from django.http.response import JsonResponse
+from http import HTTPStatus
+from django.http import Http404
+from django.utils.text import slugify
+
+class Clase1(APIView):
+
+    def get (self, request):
+        pass
+```
+
+---
+# Notas:
+- Cada .gitignore debera de contener:
+
+``` bash
+entorno
+.env
+__init__.py
+__pycache__
+*pyc
 ```
 ---
 
