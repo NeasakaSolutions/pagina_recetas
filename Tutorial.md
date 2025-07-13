@@ -713,7 +713,47 @@ class Clase1(APIView):
     def get (self, request):
         pass
 ```
+---
+- En settings.py agregar en INSTALLED_APPS, la app de recetas:
 
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'categorias',
+    'recetas',
+]
+```
+---
+- En models de la app recetas:
+
+```python
+from django.db import models
+from autoslug import AutoSlugField
+from categorias.models import Categoria
+
+class Receta(models.Model):
+    categoria = models.ForeignKey(Categoria, models.DO_NOTHING, default = 1)
+    nombre = models.CharField(max_length = 100, null = False)
+    slug = AutoSlugField(populate_from = 'nombre', max_length = 100)
+    tiempo = models.CharField(max_length = 100, null = True)
+    foto = models.CharField(max_length = 100, null = True)
+    descripcion = models.TextField()
+    fecha = models.DateTimeField(auto_now = True)
+```
+---
+- Crear las migraciones por medio de consola:
+
+```bash
+python manage.py makemigrations # 1er ejecucion
+python manage.py migrate # 2da ejecucion
+
+```
 ---
 # Notas:
 - Cada .gitignore debera de contener:
