@@ -816,9 +816,21 @@ class RecetaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Receta
-        fields = ("id", "nombre", "slug", "tiempo", "descripcion", "fecha", "categoria", "categoria_id")
+        fields = ("id", "nombre", "slug", "tiempo", "descripcion", "fecha", "categoria", "categoria_id", "imagen")
 ```
 
+- En archivo .env, agregar tu direccion ip de django en base_url
+
+```bash
+BASE_URL = http://xxx.x.x.x:xxxx/
+```
+
+- En el archivo serializers.py de la app recetas, agregar:
+
+```python
+    def get_imagen(self, obj):
+        return f"{os.getenv("BASE_URL")}uploads/recetas/{obj.foto}"
+```
 ---
 # Notas:
 - Cada .gitignore debera de contener:
