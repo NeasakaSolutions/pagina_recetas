@@ -801,6 +801,24 @@ class Clase1(APIView):
 ```bash
 http://xxx.x.x.x:xxxx/api/v1/categorias
 ```
+
+---
+
+- En serializers.py de la app recetas:
+
+```python
+from rest_framework import serializers
+from recetas.models import Receta
+
+class RecetaSerializer(serializers.ModelSerializer):
+    categoria = serializers.ReadOnlyField(source = "categoria.nombre")
+    fecha = serializers.DateTimeField(format = "%d/%m/%Y")
+
+    class Meta:
+        model = Receta
+        fields = ("id", "nombre", "slug", "tiempo", "descripcion", "fecha", "categoria", "categoria_id")
+```
+
 ---
 # Notas:
 - Cada .gitignore debera de contener:
