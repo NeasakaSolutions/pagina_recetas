@@ -754,6 +754,19 @@ python manage.py makemigrations # 1er ejecucion
 python manage.py migrate # 2da ejecucion
 
 ```
+- Crear el archivo serializers.py para la app recetas y agregar:
+
+```python
+from rest_framework import serializers
+from recetas.models import Receta
+
+class RecetaSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Receta
+        fields = ('__all__')
+```
+
 ---
 # Notas:
 - Cada .gitignore debera de contener:
