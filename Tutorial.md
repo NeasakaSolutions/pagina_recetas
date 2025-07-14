@@ -766,7 +766,41 @@ class RecetaSerializer(serializers.ModelSerializer):
         model = Receta
         fields = ('__all__')
 ```
+---
+- Llenar la tabla con registros
 
+``` bash
+INSERT INTO `django_recetas`.`recetas` (`id`, `nombre`, `slug`, `tiempo`, `foto`, `descripcion`, `fecha`, `categoria_id`) VALUES ('1', 'Pastel de maiz', 'pastel-de-maiz', '2 horas', 'Furina.png', 'Muy lejos, más allá de las montañas de palabras, alejados de los países de las vocales', '2024-09-13 00:00:00.000000', '1');
+INSERT INTO `django_recetas`.`recetas` (`id`, `nombre`, `slug`, `tiempo`, `foto`, `descripcion`, `fecha`, `categoria_id`) VALUES ('2', 'Pozole mexicano', 'pozole-mexicano', '1 hora y media', 'Furina.png', 'Muy lejos, más allá de las montañas de palabras, alejados de los países de las vocales', '2024-09-13 00:00:00.000000', '1');
+INSERT INTO `django_recetas`.`recetas` (`id`, `nombre`, `slug`, `tiempo`, `foto`, `descripcion`, `fecha`, `categoria_id`) VALUES ('3', 'Pastel de uwu', 'pastel-de-uwu', 'una hora', 'Furina.png', 'Muy lejos, más allá de las montañas de palabras, alejados de los países de las vocales', '2024-09-13 00:00:00.000000', '4');
+INSERT INTO `django_recetas`.`recetas` (`id`, `nombre`, `slug`, `tiempo`, `foto`, `descripcion`, `fecha`, `categoria_id`) VALUES ('4', 'Vodka tonica', 'vodka-tonica', '2 minutos', 'Furina.png', 'Muy lejos, más allá de las montañas de palabras, alejados de los países de las vocales', '2024-09-13 00:00:00.000000', '3');
+```
+
+- En views.py de la app receta importar:
+
+```python
+from recetas.serializers import RecetaSerializer
+from recetas.models import Receta
+```
+
+---
+
+- En views.py de la app recetas completar la funcion que se tiene:
+
+```python
+class Clase1(APIView):
+
+    def get (self, request):
+        data = Receta.objects.order_by('-id').all()
+        datos_json = RecetaSerializer(data, many = True)
+        return JsonResponse({"data": datos_json.data})
+```
+
+- Crear una nueva ruta en insomnia:
+
+```bash
+http://xxx.x.x.x:xxxx/api/v1/categorias
+```
 ---
 # Notas:
 - Cada .gitignore debera de contener:
