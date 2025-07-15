@@ -824,12 +824,43 @@ class RecetaSerializer(serializers.ModelSerializer):
 ```bash
 BASE_URL = http://xxx.x.x.x:xxxx/
 ```
-
+---
 - En el archivo serializers.py de la app recetas, agregar:
 
 ```python
     def get_imagen(self, obj):
         return f"{os.getenv("BASE_URL")}uploads/recetas/{obj.foto}"
+```
+- En urls.py de la app recetas agregar la ruta:
+
+```python
+path('recetas/<int:id>', Clase2.as_view())
+```
+
+- En views.py de la app recetas agregar las siguientes importaciones:
+
+```python
+import os
+from dotenv import load_dotenv
+from django.utils.dateformat import DateFormat
+```
+---
+- En views.py de la app recetas agregar esta clase:
+
+```python
+class Clase2(APIView):
+
+    def get(self, request, id):
+        try:
+            data = Receta.objects.filter(id = id).get()
+            return JsonResponse({"data": {"id" : data.id, "nombre": data.nombre, "slug": data.slug, 
+                                "tiempo": data.tiempo, "descripcion": data.descripcion, 
+                                "fecha": DateFormat(data.fecha).format('d/m/Y'), "categoria_id": data.categoria_id, 
+                                "categoria" : data.categoria.nombre, 
+                                "imagen": f"{os.getenv("BASE_URL")}uploads/recetas/{data.foto}"}}, 
+                                status = HTTPStatus.OK)
+        except Receta.DoesNotExist:
+            raise Http404
 ```
 ---
 # Notas:
