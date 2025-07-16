@@ -971,6 +971,23 @@ except Exception as e:
 if request.FILES["foto"].content_type == "image/jpeg" or request.FILES["foto"].content_type == "image/png":
 ```
 ---
+
+- En la "Clase2" de la app recetas se agregara el metodo delete:
+
+```python
+def delete(self, request, id):
+        try:
+            data = Receta.objects.filter(id = id).get()
+        except Receta.DoesNotExist:
+            return JsonResponse({"estado": "error", "mensaje": "La receta que se intenta eliminar no existe"}, 
+                                status = HTTPStatus.NOT_FOUND)
+        
+        os.remove(f"./uploads/recetas/{data.foto}")
+        Receta.objects.filter(id = id).delete()
+        return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro"}, 
+                            status = HTTPStatus.OK)
+```
+---
 # Notas:
 - Cada .gitignore debera de contener:
 
