@@ -159,4 +159,22 @@ class Clase2(APIView):
         except Exception as e:
             return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
                                 status = HTTPStatus.NOT_FOUND)
+        
+    def delete(self, request, id):
+        try:
+            # Verificar que el registro exista en la BD
+            data = Receta.objects.filter(id = id).get()
+        except Receta.DoesNotExist:
+            # Retorno
+            return JsonResponse({"estado": "error", "mensaje": "La receta que se intenta eliminar no existe"}, 
+                                status = HTTPStatus.NOT_FOUND)
+        
+        # Borrar la foto de la carpeta
+        os.remove(f"./uploads/recetas/{data.foto}")
+
+        # Borrar el registro de la BD
+        Receta.objects.filter(id = id).delete()
+        # Retorno
+        return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro"}, 
+                            status = HTTPStatus.OK)
 
