@@ -1004,6 +1004,40 @@ def delete(self, request, id):
                             status = HTTPStatus.OK)
 ```
 ---
+
+### App de contactos
+
+- Generar la app
+
+```python
+django-admin startapp contacto
+```
+
+- Generar el archivo urls.py en la app de contacto:
+
+```python
+from django.urls import path
+from contacto.views import Clase1
+
+urlpatterns = [
+    path('contacto', Clase1.as_view()),
+]
+```
+---
+
+- Registrar la app contaco en la url principal:
+
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('home.urls')),
+    path('api/v1/', include('categorias.urls')),
+    path('api/v1/', include('recetas.urls')),
+    path('api/v1/', include('contacto.urls')),
+]
+```
+
+---
 # Notas:
 - Cada .gitignore debera de contener:
 
