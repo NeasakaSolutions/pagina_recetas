@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('api/v1/', include('categorias.urls')),
     path('api/v1/', include('recetas.urls')),
+    path('api/v1/', include('contacto.urls')),
 ]
 
 # Url para configuracion de los archivos que se van a mostrar
