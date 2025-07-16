@@ -7,6 +7,7 @@ from django.http import Http404
 from django.utils.text import slugify
 # Tabla que se usara para realizar las consultas
 from categorias.models import Categoria 
+from recetas.models import Receta
 
 # Clases de la aplicacion
 class Clase1(APIView):
@@ -74,13 +75,16 @@ class Clase2(APIView):
         try:
             # Busca el registro
             data = Categoria.objects.filter(pk = id).get()
-            # Eliminar en caso de que si encuentre el registro
-            Categoria.objects.filter(pk = id).delete()
-            # Retorno
-            return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro correctamente"},
-                                 status = HTTPStatus.OK)
-
         except Categoria.DoesNotExist:
             raise Http404
+        
+        if Receta.objects.filter(categoria_id = id).exists():
+            return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        # Eliminar en caso de que si encuentre el registro
+        Categoria.objects.filter(pk = id).delete()
+        # Retorno
+        return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro correctamente"},
+                            status = HTTPStatus.OK)
 
         
