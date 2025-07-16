@@ -988,6 +988,22 @@ def delete(self, request, id):
                             status = HTTPStatus.OK)
 ```
 ---
+- En views.py de la app categorias modificar el metodo delete:
+
+```python
+    def delete(self, request, id):
+        try:
+            data = Categoria.objects.filter(pk = id).get()
+        except Categoria.DoesNotExist:
+            raise Http404
+        if Receta.objects.filter(categoria_id = id).exists():
+            return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        Categoria.objects.filter(pk = id).delete()
+        return JsonResponse({"estado": "ok", "mensaje": "Se elimino el registro correctamente"},
+                            status = HTTPStatus.OK)
+```
+---
 # Notas:
 - Cada .gitignore debera de contener:
 
