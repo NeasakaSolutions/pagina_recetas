@@ -26,10 +26,13 @@ class Clase1(APIView):
         try:
             # Se crean los registros:
             Contacto.objects.create(nombre = request.data['nombre'], correo = request.data['correo'], 
-                                    telefono = request.data['telefono'], mensaje = request.dat['mensaje'], 
+                                    telefono = request.data['telefono'], mensaje = request.data['mensaje'], 
                                     fecha = datetime.now())
         except Exception as e:
             return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
                                 status = HTTPStatus.BAD_REQUEST)
+        
+        return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro exitosamente"}, 
+                            status = HTTPStatus.OK)
         
 
