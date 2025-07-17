@@ -1135,6 +1135,17 @@ except Exception as e:
 from utilidades.utilidades import utilidades
 ```
 
+- Crear una cuenta en mailtrap
+
+- En imboxes registrar los datos que nos dan en el .env
+
+```bash
+SMTP_SERVER=xxxxx.xxxx.xxxxx.xx
+SMTP_PORT=587
+SMTP_USER=xxxxxxxxxx
+SMTP_PASSWORD=xxxxxxxxxxx
+```
+
 ---
 # Notas:
 - Cada .gitignore debera de contener:
