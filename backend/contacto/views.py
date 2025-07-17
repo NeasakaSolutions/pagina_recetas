@@ -8,7 +8,7 @@ from categorias.models import Categoria
 from recetas.models import Receta
 from contacto.models import Contacto
 # Llamamos a utilidades
-from utilidades.utilidades import utilidades
+from utilidades import utilidades
 
 # Busqueda en conjunto
 class Clase1(APIView):
@@ -34,6 +34,20 @@ class Clase1(APIView):
             return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
                                 status = HTTPStatus.BAD_REQUEST)
         
+        # Variable de utilidades:
+        html = f"""
+                <h1>Nuevo mensaje de sitio web</h1>
+                <ul>
+                    <li>Nombre: {request.data['nombre']}</li>
+                    <li>Correo: {request.data['correo']}</li>
+                    <li>Telefono: {request.data['telefono']}</li>
+                    <li>Mensaje: {request.data['mensaje']}</li>
+                </ul>
+        """
+        # Llamamos a la funcion
+        utilidades.sendMail(html, "Prueba de correo", request.data['correo'])
+
+        # Retorno principal
         return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro exitosamente"}, 
                             status = HTTPStatus.OK)
         
