@@ -1173,6 +1173,21 @@ def sendMail(html, asunto, para):
         print("Error envio mail")
 ```
 ---
+- En views.py de la app contacto, antes del retorno principal, agregar:
+
+```python
+html = f"""
+        <h1>Nuevo mensaje de sitio web</h1>
+        <ul>
+            <li>Nombre: {request.data['nombre']}</li>
+            <li>Correo: {request.data['correo']}</li>
+            <li>Telefono: {request.data['telefono']}</li>
+            <li>Mensaje: {request.data['mensaje']}</li>
+        </ul>
+"""
+utilidades.sendMail(html, "Prueba de correo", request.data['correo'])
+```
+---
 # Notas:
 - Cada .gitignore debera de contener:
 
