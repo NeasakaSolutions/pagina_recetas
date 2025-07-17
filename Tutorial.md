@@ -1063,10 +1063,52 @@ class Clase1(APIView):
             return JsonResponse({"estado": "error", "mensaje": "El campo mensaje es obligatorio."})
 ```
 ---
+- En settings.py agregar la app contacto
 
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'categorias',
+    'recetas',
+    'contacto',
+]
+```
+
+---
 - En models.py de la app contacto
 
 ```python
+from django.db import models
+
+class Contacto(models.Model):
+    nombre = models.CharField(max_length = 100, blank = True, null = True)
+    correo = models.CharField(max_length = 100, blank = True, null = True)
+    telefono = models.CharField(max_length = 100, blank = True, null = True)
+    mensaje = models.TextField()
+    fecha = models.DateTimeField()
+
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        db_table = 'contacto'
+        verbose_name = 'Contacto'
+        verbose_name_plural = "Contactos"
+```
+
+---
+
+- Generar las migraciones:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 ---
