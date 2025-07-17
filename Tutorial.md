@@ -1111,6 +1111,21 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+- En views.py de la app contacto agregar dentro de la funcion post:
+
+```python
+try:
+    Contacto.objects.create(nombre = request.data['nombre'], correo = request.data['correo'], 
+                        telefono = request.data['telefono'], mensaje = request.data['mensaje'], 
+                        fecha = datetime.now())
+except Exception as e:
+    return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
+                        status = HTTPStatus.BAD_REQUEST)
+        
+    return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro exitosamente"}, 
+                        status = HTTPStatus.OK)
+```
+
 ---
 # Notas:
 - Cada .gitignore debera de contener:
