@@ -1,10 +1,12 @@
 # Importaciones
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
+from datetime import datetime
 from http import HTTPStatus
 # Modelos de la bases de datos:
 from categorias.models import Categoria
 from recetas.models import Receta
+from contacto.models import Contacto
 
 # Busqueda en conjunto
 class Clase1(APIView):
@@ -20,5 +22,14 @@ class Clase1(APIView):
             return JsonResponse({"estado": "error", "mensaje": "El campo telefono es obligatorio."})
         if request.data.get("mensaje") == None or not request.data["mensaje"]:
             return JsonResponse({"estado": "error", "mensaje": "El campo mensaje es obligatorio."})
+        
+        try:
+            # Se crean los registros:
+            Contacto.objects.create(nombre = request.data['nombre'], correo = request.data['correo'], 
+                                    telefono = request.data['telefono'], mensaje = request.dat['mensaje'], 
+                                    fecha = datetime.now())
+        except Exception as e:
+            return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado"}, 
+                                status = HTTPStatus.BAD_REQUEST)
         
 
