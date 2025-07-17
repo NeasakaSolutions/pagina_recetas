@@ -1126,6 +1126,15 @@ except Exception as e:
                         status = HTTPStatus.OK)
 ```
 
+- Crear una carpeta de utilidades en la raiz del proyecto, generar en la carpeta un archivo "__init__.py" y otro "utilidades.py"
+---
+
+- Importar el archivo utilidades en views.py de contactos:
+
+```python
+from utilidades.utilidades import utilidades
+```
+
 ---
 # Notas:
 - Cada .gitignore debera de contener:
