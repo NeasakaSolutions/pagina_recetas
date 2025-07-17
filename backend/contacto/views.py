@@ -7,6 +7,8 @@ from http import HTTPStatus
 from categorias.models import Categoria
 from recetas.models import Receta
 from contacto.models import Contacto
+# Llamamos a utilidades
+from utilidades.utilidades import utilidades
 
 # Busqueda en conjunto
 class Clase1(APIView):
