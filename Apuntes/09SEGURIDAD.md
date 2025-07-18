@@ -31,11 +31,31 @@ urlpatterns = [
     path('api/v1/', include('seguridad.urls')),
 ]
 ```
+---
 - En views.py de la app seguridad
 ```python
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
 from django.http import Http404
 from http import HTTPStatus
+
+class Clase1(APIView):
+    
+    def post(self, request):
+        pass
 ```
+---
+- Crear un nuevo super usuario:
+```bash
+python manage.py createsuperuser
+```
+
+- Generar datos para el acceso
+```bash
+User: yo@neasakapendragon.com
+Email: yo@neasakapendragon.com
+Password: 12345678
+```
+
+- Verificar la creacion del usuario en la bd en la tabla auth_user
 ---
