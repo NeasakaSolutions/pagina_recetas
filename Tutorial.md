@@ -1125,9 +1125,8 @@ except Exception as e:
     return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro exitosamente"}, 
                         status = HTTPStatus.OK)
 ```
-
-- Crear una carpeta de utilidades en la raiz del proyecto, generar en la carpeta un archivo "__init__.py" y otro "utilidades.py"
 ---
+- Crear una carpeta de utilidades en la raiz del proyecto, generar en la carpeta un archivo "__init__.py" y otro "utilidades.py"
 
 - Importar el archivo utilidades en views.py de contactos:
 
@@ -1187,6 +1186,25 @@ html = f"""
 """
 utilidades.sendMail(html, "Prueba de correo", request.data['correo'])
 ```
+
+---
+### Seguridad en las rutas
+- Crear una nueva app
+```bash
+django-admin startapp seguridad
+```
+
+- Crear el archivo urls.py en la app de seguridad
+```python
+from django.urls import path
+from seguridad.views import Clase1
+
+urlpatterns = [
+    path('seguridad/registro', Clase1.as_view()),
+]
+```
+---
+- en views.py de la app
 ---
 # Notas:
 - Cada .gitignore debera de contener:
