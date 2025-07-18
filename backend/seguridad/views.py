@@ -6,4 +6,8 @@ from http import HTTPStatus
 # Modelos de las bases de datos
 from categorias.models import Categoria
 
-
+# Clases
+class Clase1(APIView):
+    
+    def post(self, request):
+        pass
