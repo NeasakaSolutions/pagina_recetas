@@ -58,4 +58,39 @@ Password: 12345678
 ```
 
 - Verificar la creacion del usuario en la bd en la tabla auth_user
+
+- En settings.py agregar en INSTALLED_APPS la app de seguridad
+---
+
+- Generamos un token en la app de seguridad en models.py:
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class UserMetadata(models.Model):
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    token = models.CharField(max_length = 100, blank = True, null = True)
+
+    def __str__(self):
+        return f"{self.first_user} {self.last_name}"
+    
+    class Meta:
+        db_table = 'users_metadata'
+        verbose_name = "User metadata"
+        verbose_name_plural = "User metadata"
+```
+---
+
+- Aplicamos las migraciones correspondientes:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+- Verificar que exista la nueva tabla y hacer un registro:
+
+``` bash
+SELECT * FROM users_metadata;
+```
 ---
