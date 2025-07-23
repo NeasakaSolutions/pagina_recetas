@@ -145,3 +145,19 @@ token = uuid.uuid4()
                                 status = HTTPStatus.CREATED)
 ```
 ---
+- Agregar respuesta en las validaciones:
+
+```python
+html = f"""
+    <h3>Verificacion de cuenta</h3>
+    Hola {request.data["nombre"]} te haz registrado exitosamente. Para activar tu cuenta haz click en 
+    el siguiente enlace: <br/>
+    <a href="{url}">{url}</a>
+    <br/>
+    O copia y pega la siguiente url en tu navegador favorito:
+    <br/>
+    {url}
+    """
+utilidades.sendMail(html, "Verificacion", request.data["correo"])
+```
+---
