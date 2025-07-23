@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class UserMetadata(models.Model):
+class UsersMetadata(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     # Crear un token para verificaciones de la cuenta
     token = models.CharField(max_length = 100, blank = True, null = True)

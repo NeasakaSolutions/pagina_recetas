@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from django.http.response import JsonResponse
 from django.http import Http404
 from http import HTTPStatus
+import uuid
+import os
+from dotenv import load_dotenv
 # Modelos de las bases de datos
-from categorias.models import Categoria
+from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
 
 # Clases
@@ -27,3 +30,20 @@ class Clase1(APIView):
         if User.objects.filter(email = request.data["correo"]).exists():
             return JsonResponse({"estado": "error", "mensaje": f"El correo {request.data["correo"]} ya existe."}, 
                                  status = HTTPStatus.BAD_REQUEST)
+
+        # Variable token
+        token = uuid.uuid4()
+        url = f"{os.getenv("BASE_URL")}api/v1/seguridad/verificacion{token}"
+        try:
+            # Creacion del usuario
+            u = User.objects.create_user(username = request.data["correo"], password = request.data["password"], 
+                                        email = request.data["correo"], first_name = request.data["nombre"], 
+                                        last_name = "", is_active = 0)
+            
+            UsersMetadata.objects.create(token = token, user_id = u.id)
+        except Exception as e:
+            return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado."}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        
+        return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente."}, 
+                                status = HTTPStatus.CREATED)
