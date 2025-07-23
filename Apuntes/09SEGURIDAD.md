@@ -99,12 +99,31 @@ SELECT * FROM users_metadata;
 ```python
 if request.data.get("nombre") == None or not request.data.get("nombre"):
     return JsonResponse({"estado": "error", "mensaje": "El campo nombre es obligatorio"}, 
-                        HTTPStatus.BAD_REQUEST)
+                        status = HTTPStatus.BAD_REQUEST)
 if request.data.get("correo") == None or not request.data.get("correo"):
     return JsonResponse({"estado": "error", "mensaje": "El campo correo es obligatorio"}, 
-                        HTTPStatus.BAD_REQUEST)
+                        status = HTTPStatus.BAD_REQUEST)
 if request.data.get("password") == None or not request.data.get("password"):
     return JsonResponse({"estado": "error", "mensaje": "El campo password es obligatorio"}, 
-                        HTTPStatus.BAD_REQUEST)
+                        status = HTTPStatus.BAD_REQUEST)
+if User.objects.filter(email = request.data["correo"]).exists():
+    return JsonResponse({"estado": "error", "mensaje": f"El correo {request.data["correo"]} ya existe."}, 
+                        status = HTTPStatus.BAD_REQUEST)
+```
+---
+- Crear una nueva request en insomnia:
+
+```bash
+http://xxx.x.x.x:xxxx/api/v1/contacto
+```
+
+- Mandar un json
+
+```python
+{
+    "nombre" : "Ijole",
+    "correo" : "nombre@correo.com",
+    "password" : "123456"
+}
 ```
 ---
