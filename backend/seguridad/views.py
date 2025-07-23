@@ -6,6 +6,7 @@ from http import HTTPStatus
 import uuid
 import os
 from dotenv import load_dotenv
+from utilidades import utilidades
 # Modelos de las bases de datos
 from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
@@ -41,6 +42,20 @@ class Clase1(APIView):
                                         last_name = "", is_active = 0)
             
             UsersMetadata.objects.create(token = token, user_id = u.id)
+
+            # Correo de verificacion:
+            html = f"""
+                    <h3>Verificacion de cuenta</h3>
+                    Hola {request.data["nombre"]} te haz registrado exitosamente. Para activar tu cuenta haz click en 
+                    el siguiente enlace: <br/>
+                    <a href="{url}">{url}</a>
+                    <br/>
+                    O copia y pega la siguiente url en tu navegador favorito:
+                    <br/>
+                    {url}
+                      """
+            utilidades.sendMail(html, "Verificacion", request.data["correo"])
+
         except Exception as e:
             return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado."}, 
                                 status = HTTPStatus.BAD_REQUEST)
