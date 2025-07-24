@@ -2,6 +2,7 @@
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
 from django.http import Http404
+from django.http import HttpResponseRedirect
 from http import HTTPStatus
 import uuid
 import os
@@ -11,7 +12,7 @@ from utilidades import utilidades
 from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
 
-# Clases
+# Clase para registrar
 class Clase1(APIView):
     
     def post(self, request):
@@ -34,7 +35,7 @@ class Clase1(APIView):
 
         # Variable token
         token = uuid.uuid4()
-        url = f"{os.getenv("BASE_URL")}api/v1/seguridad/verificacion{token}"
+        url = f"{os.getenv("BASE_URL")}api/v1/seguridad/verificacion/{token}"
         try:
             # Creacion del usuario
             u = User.objects.create_user(username = request.data["correo"], password = request.data["password"], 
@@ -62,3 +63,25 @@ class Clase1(APIView):
         
         return JsonResponse({"estado": "ok", "mensaje": "Se creo el registro correctamente."}, 
                                 status = HTTPStatus.CREATED)
+
+# Clase para validar:
+class Clase2(APIView):
+
+    def get(self, request, token):
+        
+        # Validacion del token:
+        if token == None or not token:
+            return JsonResponse({"estado": "error", "mensaje": "Recurso no disponible"}, 
+                                status = 404)
+        
+        try:
+            # Busca un registro con el token dado y lo guarda en data
+            data = UsersMetadata.objects.filter(token = token).get()
+            # Luego borra ese token de la base de datos, dejándolo vacío
+            UsersMetadata.objects.filter(token = token).update(token = "")
+            # Cambia el activo a 1, significa que ya se valido el usuario
+            User.objects.filter(id = data.user_id).update(is_active = 1)
+            # Redireccionamos al usuario al fronted del login
+            return HttpResponseRedirect(os.getenv("BASE_URL_FRONTED"))
+        except UsersMetadata.DoesNotExist:
+            raise Http404
