@@ -130,7 +130,7 @@ http://xxx.x.x.x:xxxx/api/v1/contacto
 - Agregar la creacion dl usuario:
 ```python
 token = uuid.uuid4()
- url = f"{os.getenv("BASE_URL")}api/v1/seguridad/verificacion{token}"
+ url = f"{os.getenv("BASE_URL")}api/v1/seguridad/verificacion/{token}"
     try:
         u = User.objects.create_user(username = request.data["correo"], password = request.data["password"], 
                                     email = request.data["correo"], first_name = request.data["nombre"], 
@@ -159,5 +159,32 @@ html = f"""
     {url}
     """
 utilidades.sendMail(html, "Verificacion", request.data["correo"])
+```
+- En urls.py de la app seguridad agregar la ruta de verificacion:
+```python
+path('seguridad/verificacion/<str:token>', Clase2.as_view()),
+```
+---
+- En .env del fronted: (la url es la misma que BASE_URL, solo cambia el puerto)
+```python
+BASE_URL_FRONTED=http://xxx.x.x.x:5173/login
+```
+
+- En views.py de la app seguridad agregar la Clase2:
+```python
+class Clase2(APIView):
+
+    def get(self, request, token):
+        
+        if token == None or not token:
+            return JsonResponse({"estado": "error", "mensaje": "Recurso no disponible"}, 
+                                status = 404)
+        try:
+            data = UsersMetadata.objects.filter(token = token).get()
+            UsersMetadata.objects.filter(token = token).update(token = "")
+            User.objects.filter(id = data.user_id).update(is_active = 1)
+            return HttpResponseRedirect(os.getenv("BASE_URL_FRONTED"))
+        except UsersMetadata.DoesNotExist:
+            raise Http404
 ```
 ---
