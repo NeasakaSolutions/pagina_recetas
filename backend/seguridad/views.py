@@ -75,8 +75,8 @@ class Clase2(APIView):
                                 status = 404)
         
         try:
-            # Busca un registro con el token dado y lo guarda en data
-            data = UsersMetadata.objects.filter(token = token).get()
+            # Busca un registro con el token dado donde el is_active sea igual a 0 y lo guarda en data
+            data = UsersMetadata.objects.filter(token = token).filter(user__is_active = 0).get()
             # Luego borra ese token de la base de datos, dejándolo vacío
             UsersMetadata.objects.filter(token = token).update(token = "")
             # Cambia el activo a 1, significa que ya se valido el usuario
