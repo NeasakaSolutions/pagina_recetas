@@ -180,7 +180,7 @@ class Clase2(APIView):
             return JsonResponse({"estado": "error", "mensaje": "Recurso no disponible"}, 
                                 status = 404)
         try:
-            data = UsersMetadata.objects.filter(token = token).get()
+            data = UsersMetadata.objects.filter(token = token).filter(user__is_active = 0).get()
             UsersMetadata.objects.filter(token = token).update(token = "")
             User.objects.filter(id = data.user_id).update(is_active = 1)
             return HttpResponseRedirect(os.getenv("BASE_URL_FRONTED"))
