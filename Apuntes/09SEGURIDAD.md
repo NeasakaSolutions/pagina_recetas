@@ -208,15 +208,29 @@ path('seguridad/login', Clase3.as_view()),
 ---
 - Se agrega la clase 3:
 ```python
-# Clase para login:
 class Clase3(APIView):
 
     def post(self, request):
+
         if request.data.get("correo") == None or not request.data.get("correo"):
             return JsonResponse({"estado": "error", "mensaje": "El campo correo es obligatorio"}, 
                                 status = HTTPStatus.BAD_REQUEST)
         if request.data.get("password") == None or not request.data.get("password"):
             return JsonResponse({"estado": "error", "mensaje": "El campo password es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        
+        try:
+            user = User.objects.filter(email = request.data["correo"]).get()
+        except User.DoesNotExist:
+            return JsonResponse({"estado": "error", "mensaje": "El correo ingresado no es valido."}, 
+                                status = HTTPStatus.NOT_FOUND)
+        
+
+        auth = authenticate(request, username = request.data.get("correo"), password = request.data.get("password"))
+        if auth is not None:
+            pass
+        else:
+            return JsonResponse({"estado": "error", "mensaje": "La password ingresada no es valida."}, 
                                 status = HTTPStatus.BAD_REQUEST)
 ```
 ---
