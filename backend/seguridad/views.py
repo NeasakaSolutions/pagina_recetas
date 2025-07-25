@@ -12,7 +12,7 @@ from utilidades import utilidades
 from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
 
-# Clase para registrar
+# Clase para registrar:
 class Clase1(APIView):
     
     def post(self, request):
@@ -85,3 +85,17 @@ class Clase2(APIView):
             return HttpResponseRedirect(os.getenv("BASE_URL_FRONTED"))
         except UsersMetadata.DoesNotExist:
             raise Http404
+        
+# Clase para login:
+class Clase3(APIView):
+
+    def post(self, request):
+        # Validaciones:
+        if request.data.get("correo") == None or not request.data.get("correo"):
+            return JsonResponse({"estado": "error", "mensaje": "El campo correo es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        if request.data.get("password") == None or not request.data.get("password"):
+            return JsonResponse({"estado": "error", "mensaje": "El campo password es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+
+
