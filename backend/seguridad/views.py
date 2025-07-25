@@ -8,6 +8,7 @@ import uuid
 import os
 from dotenv import load_dotenv
 from utilidades import utilidades
+from django.contrib.auth import authenticate
 # Modelos de las bases de datos
 from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
@@ -96,6 +97,21 @@ class Clase3(APIView):
                                 status = HTTPStatus.BAD_REQUEST)
         if request.data.get("password") == None or not request.data.get("password"):
             return JsonResponse({"estado": "error", "mensaje": "El campo password es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        
+        try:
+            # SELECT * FROM auth_user WHERE correo = correo
+            user = User.objects.filter(email = request.data["correo"]).get()
+        except User.DoesNotExist:
+            return JsonResponse({"estado": "error", "mensaje": "El correo ingresado no es valido."}, 
+                                status = HTTPStatus.NOT_FOUND)
+        
+        # Validacion de la password
+        auth = authenticate(request, username = request.data.get("correo"), password = request.data.get("password"))
+        if auth is not None:
+            pass
+        else:
+            return JsonResponse({"estado": "error", "mensaje": "La password ingresada no es valida."}, 
                                 status = HTTPStatus.BAD_REQUEST)
 
 
