@@ -9,6 +9,11 @@ import os
 from dotenv import load_dotenv
 from utilidades import utilidades
 from django.contrib.auth import authenticate
+from jose import jwt
+from django.conf import settings
+from datetime import datetime
+from datetime import timedelta
+import time
 # Modelos de las bases de datos
 from seguridad.models import UsersMetadata
 from django.contrib.auth.models import User
@@ -74,7 +79,6 @@ class Clase2(APIView):
         if token == None or not token:
             return JsonResponse({"estado": "error", "mensaje": "Recurso no disponible"}, 
                                 status = 404)
-        
         try:
             # Busca un registro con el token dado donde el is_active sea igual a 0 y lo guarda en data
             data = UsersMetadata.objects.filter(token = token).filter(user__is_active = 0).get()
@@ -108,8 +112,23 @@ class Clase3(APIView):
         
         # Validacion de la password
         auth = authenticate(request, username = request.data.get("correo"), password = request.data.get("password"))
+
         if auth is not None:
-            pass
+            fecha = datetime.now()
+            # Vigencia del token
+            despues = fecha + timedelta(days = 1)
+            # Se usa cuando se suben archivos al servidor
+            fecha_numero = int(datetime.timestamp(despues))
+            payload = {"id": user.id, "ISS": os.getenv("BASE_URL"), "iat": int(time.time()), 
+                       "exp": int(fecha_numero)}
+            
+            # Crear el token:
+            try:
+                token = jwt.encode(payload, settings.SECRET_KEY, algorithm = 'HS512')
+                return JsonResponse({"id": user.id, "nombre": user.first_name, "token": token})
+            except Exception as e:
+                return JsonResponse({"estado": "error", "mensaje": "Ocurrio un error inesperado."}, 
+                                     status = HTTPStatus.BAD_REQUEST)
         else:
             return JsonResponse({"estado": "error", "mensaje": "La password ingresada no es valida."}, 
                                 status = HTTPStatus.BAD_REQUEST)
