@@ -3,3 +3,4 @@ djangorestframework==3.16.0
 mysqlclient==2.2.7
 python-dotenv==1.1.1
 django-autoslug==1.9.9
+python-jose==3.3.0
