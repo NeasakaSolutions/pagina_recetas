@@ -166,7 +166,7 @@ path('seguridad/verificacion/<str:token>', Clase2.as_view()),
 ```
 ---
 - En .env del fronted: (la url es la misma que BASE_URL, solo cambia el puerto)
-```python
+```bash
 BASE_URL_FRONTED=http://xxx.x.x.x:5173/login
 ```
 
@@ -186,5 +186,37 @@ class Clase2(APIView):
             return HttpResponseRedirect(os.getenv("BASE_URL_FRONTED"))
         except UsersMetadata.DoesNotExist:
             raise Http404
+```
+---
+- Craer una nueva ruta en insmonia:
+```bash
+http://xxx.x.x.x:xxxx/api/v1/seguridad/login
+```
+
+- Crear el endpoint con el metodo post en insomnia:
+```bash
+{
+	"correo": "yo@neasakapendragon",
+	"password": "12345678"
+}
+```
+
+- Agregar la nueva ruta en urls.py de la app s3eguridad:
+```python
+path('seguridad/login', Clase3.as_view()),
+```
+---
+- Se agrega la clase 3:
+```python
+# Clase para login:
+class Clase3(APIView):
+
+    def post(self, request):
+        if request.data.get("correo") == None or not request.data.get("correo"):
+            return JsonResponse({"estado": "error", "mensaje": "El campo correo es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
+        if request.data.get("password") == None or not request.data.get("password"):
+            return JsonResponse({"estado": "error", "mensaje": "El campo password es obligatorio"}, 
+                                status = HTTPStatus.BAD_REQUEST)
 ```
 ---
