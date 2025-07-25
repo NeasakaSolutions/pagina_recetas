@@ -234,3 +234,9 @@ class Clase3(APIView):
                                 status = HTTPStatus.BAD_REQUEST)
 ```
 ---
+- En requirements agregar python-jose y descargar
+```bash
+python-jose==3.3.0
+pip install -r requirements.txt # Instalacion
+```
+---
